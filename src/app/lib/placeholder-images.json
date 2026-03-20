@@ -53,6 +53,30 @@
       "description": "Outdoor terrace garden",
       "imageUrl": "https://picsum.photos/seed/p6/800/600",
       "imageHint": "outdoor design"
+    },
+    {
+      "id": "gallery-1",
+      "description": "Minimalist staircase design",
+      "imageUrl": "https://picsum.photos/seed/g1/800/600",
+      "imageHint": "minimalist architecture"
+    },
+    {
+      "id": "gallery-2",
+      "description": "Modern marble kitchen island",
+      "imageUrl": "https://picsum.photos/seed/g2/800/600",
+      "imageHint": "marble kitchen"
+    },
+    {
+      "id": "gallery-3",
+      "description": "Luxury master suite",
+      "imageUrl": "https://picsum.photos/seed/g3/800/600",
+      "imageHint": "luxury bedroom"
+    },
+    {
+      "id": "gallery-4",
+      "description": "Custom walk-in closet",
+      "imageUrl": "https://picsum.photos/seed/g4/800/600",
+      "imageHint": "modern closet"
     }
   ]
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import Stats from '@/components/Stats';
+import Gallery from '@/components/Gallery';
 import Services from '@/components/Services';
 import Portfolio from '@/components/Portfolio';
 import Process from '@/components/Process';
@@ -15,7 +15,7 @@ export default function Home() {
     <main className="min-h-screen bg-background selection:bg-primary/20">
       <Navbar />
       <Hero />
-      <Stats />
+      <Gallery />
       <Services />
       <Portfolio />
       <Process />
