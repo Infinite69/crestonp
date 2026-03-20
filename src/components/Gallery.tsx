@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -9,10 +10,10 @@ export default function Gallery() {
     <section className="py-24 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 space-y-4">
-          <h2 className="text-primary font-medium tracking-widest uppercase text-sm">Design Inspiration</h2>
-          <h3 className="text-4xl font-bold tracking-tight">Our Aesthetic Vision</h3>
+          <h2 className="text-primary font-medium tracking-widest uppercase text-sm">Inspiration</h2>
+          <h3 className="text-4xl font-bold tracking-tight">Interior Design Aesthetics</h3>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            As a growing studio, we draw inspiration from global design trends to bring the best of modern luxury to your doorstep.
+            A look at the design trends and high-end finishes that define the Creston Projects signature aesthetic.
           </p>
         </div>
 

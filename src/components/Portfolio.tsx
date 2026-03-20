@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -10,11 +11,11 @@ export default function Portfolio() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div className="space-y-4">
-            <h2 className="text-primary font-medium tracking-widest uppercase text-sm">Portfolio</h2>
-            <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Selected Projects</h3>
+            <h2 className="text-primary font-medium tracking-widest uppercase text-sm">Design Concepts</h2>
+            <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Inspirational Visions</h3>
           </div>
           <p className="text-muted-foreground max-w-md">
-            A showcase of our most ambitious and elegant projects across New Delhi and beyond.
+            As a fresh studio, we showcase our aesthetic capabilities through curated design visions that represent the premium standard of our upcoming projects.
           </p>
         </div>
 
