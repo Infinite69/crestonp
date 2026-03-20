@@ -9,8 +9,12 @@ import Testimonials from '@/components/Testimonials';
 import MoodBoardTool from '@/components/MoodBoardTool';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
+  const aboutImage = PlaceHolderImages.find(img => img.id === 'about-studio');
+
   return (
     <main className="min-h-screen bg-background selection:bg-primary/20">
       <Navbar />
@@ -34,11 +38,15 @@ export default function Home() {
             </p>
           </div>
           <div className="relative h-[400px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl">
-            <img 
-              src="https://picsum.photos/seed/about-creston/1200/1200" 
-              alt="Creston Studio" 
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
-            />
+            {aboutImage && (
+              <Image 
+                src={aboutImage.imageUrl} 
+                alt={aboutImage.description}
+                fill
+                className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                data-ai-hint={aboutImage.imageHint}
+              />
+            )}
           </div>
         </div>
       </section>
