@@ -28,10 +28,34 @@ const generateDesignImageFlow = ai.defineFlow(
     outputSchema: GenerateDesignImageOutputSchema,
   },
   async (input) => {
+    // Truncate and clean the prompt to ensure it fits within image model limits
+    // and focus on purely visual descriptive keywords.
+    const cleanPrompt = input.prompt.split('.').slice(0, 2).join('. ');
+
     const { media } = await ai.generate({
       model: 'googleai/imagen-4.0-fast-generate-001',
-      prompt: `A high-end, professional interior design photograph of a ${input.prompt}. 
-               Luxury finishes, elegant lighting, architectural digest style, 8k resolution, highly detailed.`,
+      prompt: `A high-end, professional interior design photograph. Scene: ${cleanPrompt}. 
+               Luxury finishes, elegant architectural lighting, high-quality textures, 8k resolution, photorealistic.`,
+      config: {
+        safetySettings: [
+          {
+            category: 'HARM_CATEGORY_HATE_SPEECH',
+            threshold: 'BLOCK_ONLY_HIGH',
+          },
+          {
+            category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+            threshold: 'BLOCK_ONLY_HIGH',
+          },
+          {
+            category: 'HARM_CATEGORY_HARASSMENT',
+            threshold: 'BLOCK_ONLY_HIGH',
+          },
+          {
+            category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+            threshold: 'BLOCK_ONLY_HIGH',
+          },
+        ],
+      },
     });
 
     if (!media || !media.url) {

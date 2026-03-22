@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from 'react';
@@ -38,16 +39,17 @@ export default function MoodBoardTool() {
       // Step 2: Generate Visual Render
       setGeneratingImage(true);
       try {
+        // We pass a more structured prompt to help the image generator
         const imageResult = await generateDesignImage({
-          prompt: `${output.conceptTitle}: ${output.description}`
+          prompt: `${output.conceptTitle}. ${output.description}`
         });
         setGeneratedImageUrl(imageResult.imageUrl);
       } catch (imageError) {
         console.error("Image generation failed:", imageError);
         toast({
           variant: "destructive",
-          title: "Visualization Failed",
-          description: "We generated your concept, but the AI renderer is currently busy. Try again in a moment.",
+          title: "Visualization Busy",
+          description: "We've created your mood board! The 3D render engine is taking a bit longer than usual. Please try generating the image again in a few seconds.",
         });
       } finally {
         setGeneratingImage(false);
@@ -57,7 +59,7 @@ export default function MoodBoardTool() {
       toast({
         variant: "destructive",
         title: "AI Studio Error",
-        description: "Something went wrong while connecting to the AI Designer. Please check your connection and try again.",
+        description: "The AI Designer is having trouble connecting. Please check your internet and try again.",
       });
     } finally {
       setLoading(false);
@@ -73,12 +75,12 @@ export default function MoodBoardTool() {
               <Sparkles className="w-4 h-4" />
               <span>AI Design Studio</span>
             </div>
-            <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Visualize Your Future Space</h3>
+            <h3 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">Visualize Your Future Space</h3>
             <p className="text-muted-foreground text-lg">
               Our advanced AI doesn't just suggest—it visualizes. Tell us your preferences, and we'll generate a complete mood board and a photorealistic render of your concept.
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-6 bg-background p-8 rounded-2xl border shadow-sm">
+            <form onSubmit={handleSubmit} className="space-y-6 bg-background p-8 rounded-none border shadow-sm">
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Room Type</label>
@@ -88,6 +90,7 @@ export default function MoodBoardTool() {
                     placeholder="e.g. Master Bedroom"
                     required
                     disabled={loading}
+                    className="rounded-none border-primary/20"
                   />
                 </div>
                 <div className="space-y-2">
@@ -98,6 +101,7 @@ export default function MoodBoardTool() {
                     placeholder="e.g. Bohemian"
                     required
                     disabled={loading}
+                    className="rounded-none border-primary/20"
                   />
                 </div>
               </div>
@@ -109,6 +113,7 @@ export default function MoodBoardTool() {
                   placeholder="e.g. Navy Blue and Cream"
                   required
                   disabled={loading}
+                  className="rounded-none border-primary/20"
                 />
               </div>
               <div className="space-y-2">
@@ -117,11 +122,11 @@ export default function MoodBoardTool() {
                   value={formData.additionalNotes}
                   onChange={e => setFormData({...formData, additionalNotes: e.target.value})}
                   placeholder="Any specific textures or materials..."
-                  className="h-24"
+                  className="h-24 rounded-none border-primary/20"
                   disabled={loading}
                 />
               </div>
-              <Button type="submit" disabled={loading} className="w-full h-12 bg-primary">
+              <Button type="submit" disabled={loading} className="w-full h-12 bg-primary rounded-none">
                 {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
                 {loading ? "AI Designer at Work..." : "Generate My Design"}
               </Button>
@@ -130,7 +135,7 @@ export default function MoodBoardTool() {
 
           <div className="relative min-h-[600px]">
             {!result && !loading && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center space-y-4 border-2 border-dashed rounded-2xl border-primary/20 bg-primary/[0.02] p-12">
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center space-y-4 border-2 border-dashed border-primary/20 bg-primary/[0.02] p-12">
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                   <Palette className="w-8 h-8" />
                 </div>
@@ -140,7 +145,7 @@ export default function MoodBoardTool() {
             )}
 
             {(loading || result) && (
-              <Card className="border-none shadow-2xl bg-background overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700 h-full flex flex-col">
+              <Card className="border-none shadow-2xl bg-background overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700 h-full flex flex-col rounded-none">
                 <CardHeader className="bg-primary text-white p-8">
                   {loading && !result ? (
                     <div className="flex flex-col items-center py-12 space-y-4">
@@ -160,7 +165,7 @@ export default function MoodBoardTool() {
                   )}
                 </CardHeader>
                 <CardContent className="p-8 space-y-8 flex-1">
-                  <div className="relative aspect-video rounded-xl overflow-hidden bg-muted group border">
+                  <div className="relative aspect-video bg-muted group border border-primary/10">
                     {generatedImageUrl ? (
                       <Image 
                         src={generatedImageUrl} 
@@ -183,7 +188,7 @@ export default function MoodBoardTool() {
                         ) : (
                           <>
                             <AlertCircle className="w-10 h-10 mb-4 opacity-20" />
-                            <p className="text-sm opacity-50">Image generation failed or skipped</p>
+                            <p className="text-sm opacity-50">Visual render skipped. Try again for a fresh image.</p>
                           </>
                         )}
                       </div>
@@ -198,7 +203,7 @@ export default function MoodBoardTool() {
                           {result.colorPalette.map((color, i) => (
                             <div key={i} className="group relative flex-1">
                               <div 
-                                className="h-12 rounded-lg border shadow-sm transition-transform hover:scale-110" 
+                                className="h-12 border shadow-sm transition-transform hover:scale-110" 
                                 style={{ backgroundColor: color.startsWith('#') ? color : undefined }}
                                 title={color}
                               />
@@ -224,7 +229,7 @@ export default function MoodBoardTool() {
                           <h5 className="font-bold uppercase tracking-widest text-xs text-primary">Keywords</h5>
                           <div className="flex flex-wrap gap-2">
                             {result.inspirationalKeywords.map((kw, i) => (
-                              <span key={i} className="px-3 py-1 bg-primary/5 text-primary text-xs rounded-full">
+                              <span key={i} className="px-3 py-1 bg-primary/5 text-primary text-xs border border-primary/10">
                                 {kw}
                               </span>
                             ))}
