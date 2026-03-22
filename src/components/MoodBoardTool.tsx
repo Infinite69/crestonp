@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from 'react';
@@ -6,11 +7,15 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { aiDesignMoodBoardSuggestion, AIDesignMoodBoardOutput } from '@/ai/flows/ai-design-mood-board-suggestion';
-import { Loader2, Sparkles, Paintbrush, Palette } from 'lucide-react';
+import { generateDesignImage } from '@/ai/flows/generate-design-image';
+import { Loader2, Sparkles, Paintbrush, Palette, ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 
 export default function MoodBoardTool() {
   const [loading, setLoading] = useState(false);
+  const [generatingImage, setGeneratingImage] = useState(false);
   const [result, setResult] = useState<AIDesignMoodBoardOutput | null>(null);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     style: 'Modern Minimalist',
     colors: 'Emerald Green and Gold',
@@ -21,13 +26,23 @@ export default function MoodBoardTool() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setGeneratedImageUrl(null);
     try {
+      // Step 1: Generate Text Concept
       const output = await aiDesignMoodBoardSuggestion(formData);
       setResult(output);
+      
+      // Step 2: Generate Visual Render in parallel/after
+      setGeneratingImage(true);
+      const imageResult = await generateDesignImage({
+        prompt: `${output.conceptTitle}: ${output.description}`
+      });
+      setGeneratedImageUrl(imageResult.imageUrl);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
+      setGeneratingImage(false);
     }
   };
 
@@ -38,11 +53,11 @@ export default function MoodBoardTool() {
           <div className="space-y-8">
             <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
               <Sparkles className="w-4 h-4" />
-              <span>AI-Powered Design</span>
+              <span>AI Design Studio</span>
             </div>
-            <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Generate Your AI Mood Board</h3>
+            <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Visualize Your Future Space</h3>
             <p className="text-muted-foreground text-lg">
-              Not sure where to start? Tell our AI designer about your preferences, and we'll generate a curated mood board concept for your next project.
+              Our advanced AI doesn't just suggest—it visualizes. Tell us your preferences, and we'll generate a complete mood board and a photorealistic render of your concept.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-6 bg-background p-8 rounded-2xl border shadow-sm">
@@ -53,6 +68,7 @@ export default function MoodBoardTool() {
                     value={formData.roomType}
                     onChange={e => setFormData({...formData, roomType: e.target.value})}
                     placeholder="e.g. Master Bedroom"
+                    required
                   />
                 </div>
                 <div className="space-y-2">
@@ -61,6 +77,7 @@ export default function MoodBoardTool() {
                     value={formData.style}
                     onChange={e => setFormData({...formData, style: e.target.value})}
                     placeholder="e.g. Bohemian"
+                    required
                   />
                 </div>
               </div>
@@ -70,6 +87,7 @@ export default function MoodBoardTool() {
                   value={formData.colors}
                   onChange={e => setFormData({...formData, colors: e.target.value})}
                   placeholder="e.g. Navy Blue and Cream"
+                  required
                 />
               </div>
               <div className="space-y-2">
@@ -83,80 +101,112 @@ export default function MoodBoardTool() {
               </div>
               <Button type="submit" disabled={loading} className="w-full h-12 bg-primary">
                 {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                Generate Suggestion
+                Generate My Design
               </Button>
             </form>
           </div>
 
-          <div className="relative min-h-[500px]">
+          <div className="relative min-h-[600px]">
             {!result && !loading && (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center space-y-4 border-2 border-dashed rounded-2xl border-primary/20 bg-primary/[0.02] p-12">
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                   <Palette className="w-8 h-8" />
                 </div>
                 <h4 className="text-xl font-bold">Your Concept Awaits</h4>
-                <p className="text-muted-foreground max-w-xs">Fill out the form to generate a personalized design concept just for you.</p>
+                <p className="text-muted-foreground max-w-xs">Fill out the form to generate a personalized design concept and AI render.</p>
               </div>
             )}
 
-            {loading && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center space-y-4 border-2 border-dashed rounded-2xl border-primary/20 bg-primary/[0.02] p-12 animate-pulse">
-                <Loader2 className="w-12 h-12 text-primary animate-spin" />
-                <h4 className="text-xl font-bold">Designing your mood board...</h4>
-              </div>
-            )}
-
-            {result && !loading && (
-              <Card className="border-none shadow-2xl bg-background overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {(loading || result) && (
+              <Card className="border-none shadow-2xl bg-background overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700 h-full flex flex-col">
                 <CardHeader className="bg-primary text-white p-8">
-                  <div className="flex items-center justify-between mb-2">
-                    <CardTitle className="text-3xl">{result.conceptTitle}</CardTitle>
-                    <Paintbrush className="w-6 h-6 opacity-60" />
-                  </div>
-                  <CardDescription className="text-white/80 text-base italic leading-relaxed">
-                    {result.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-8 space-y-8">
-                  <div className="space-y-3">
-                    <h5 className="font-bold uppercase tracking-widest text-xs text-primary">Key Palette</h5>
-                    <div className="flex gap-2">
-                      {result.colorPalette.map((color, i) => (
-                        <div key={i} className="group relative flex-1">
-                          <div 
-                            className="h-12 rounded-lg border shadow-sm transition-transform hover:scale-110" 
-                            style={{ backgroundColor: color.startsWith('#') ? color : undefined }}
-                            title={color}
-                          />
-                          <span className="text-[10px] block mt-1 text-center truncate">{color}</span>
-                        </div>
-                      ))}
+                  {loading && !result ? (
+                    <div className="flex flex-col items-center py-12 space-y-4">
+                      <Loader2 className="w-8 h-8 animate-spin opacity-50" />
+                      <p className="text-white/70">Consulting AI Designer...</p>
                     </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between mb-2">
+                        <CardTitle className="text-3xl">{result?.conceptTitle}</CardTitle>
+                        <Paintbrush className="w-6 h-6 opacity-60" />
+                      </div>
+                      <CardDescription className="text-white/80 text-base italic leading-relaxed">
+                        {result?.description}
+                      </CardDescription>
+                    </>
+                  )}
+                </CardHeader>
+                <CardContent className="p-8 space-y-8 flex-1">
+                  {/* Generated Image Section */}
+                  <div className="relative aspect-video rounded-xl overflow-hidden bg-muted group border">
+                    {generatedImageUrl ? (
+                      <Image 
+                        src={generatedImageUrl} 
+                        alt="AI Generated Design Preview"
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground bg-muted/50 p-6">
+                        {generatingImage ? (
+                          <>
+                            <Loader2 className="w-10 h-10 animate-spin mb-4 text-primary" />
+                            <p className="text-sm font-medium animate-pulse">Generating photorealistic render...</p>
+                          </>
+                        ) : (
+                          <>
+                            <ImageIcon className="w-10 h-10 mb-4 opacity-20" />
+                            <p className="text-sm opacity-50">Visual render will appear here</p>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <h5 className="font-bold uppercase tracking-widest text-xs text-primary">Key Elements</h5>
-                      <ul className="space-y-2">
-                        {result.keyElements.map((el, i) => (
-                          <li key={i} className="flex items-start text-sm">
-                            <span className="mr-2 text-primary">•</span>
-                            {el}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="space-y-3">
-                      <h5 className="font-bold uppercase tracking-widest text-xs text-primary">Keywords</h5>
-                      <div className="flex flex-wrap gap-2">
-                        {result.inspirationalKeywords.map((kw, i) => (
-                          <span key={i} className="px-3 py-1 bg-primary/5 text-primary text-xs rounded-full">
-                            {kw}
-                          </span>
-                        ))}
+                  {result && (
+                    <>
+                      <div className="space-y-3">
+                        <h5 className="font-bold uppercase tracking-widest text-xs text-primary">Key Palette</h5>
+                        <div className="flex gap-2">
+                          {result.colorPalette.map((color, i) => (
+                            <div key={i} className="group relative flex-1">
+                              <div 
+                                className="h-12 rounded-lg border shadow-sm transition-transform hover:scale-110" 
+                                style={{ backgroundColor: color.startsWith('#') ? color : undefined }}
+                                title={color}
+                              />
+                              <span className="text-[10px] block mt-1 text-center truncate">{color}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </div>
+
+                      <div className="grid md:grid-cols-2 gap-8">
+                        <div className="space-y-3">
+                          <h5 className="font-bold uppercase tracking-widest text-xs text-primary">Key Elements</h5>
+                          <ul className="space-y-2">
+                            {result.keyElements.map((el, i) => (
+                              <li key={i} className="flex items-start text-sm">
+                                <span className="mr-2 text-primary">•</span>
+                                {el}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="space-y-3">
+                          <h5 className="font-bold uppercase tracking-widest text-xs text-primary">Keywords</h5>
+                          <div className="flex flex-wrap gap-2">
+                            {result.inspirationalKeywords.map((kw, i) => (
+                              <span key={i} className="px-3 py-1 bg-primary/5 text-primary text-xs rounded-full">
+                                {kw}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </CardContent>
               </Card>
             )}
