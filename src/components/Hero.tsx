@@ -7,6 +7,8 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Hero() {
   const mainHeroImage = PlaceHolderImages.find(img => img.id === 'hero-main');
+  const subHero1 = PlaceHolderImages.find(img => img.id === 'hero-sub1');
+  const subHero2 = PlaceHolderImages.find(img => img.id === 'hero-sub2');
 
   return (
     <section id="home" className="pt-32 pb-20 px-6">
@@ -33,17 +35,41 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="relative h-[600px] w-full hidden md:block">
-          <div className="absolute inset-0 overflow-hidden shadow-2xl rounded-2xl border-border">
-             {mainHeroImage && (
-               <Image 
-                  src={mainHeroImage.imageUrl}
-                  alt={mainHeroImage.description}
-                  fill
+        <div className="grid grid-cols-2 gap-4 h-[600px] hidden md:grid">
+          <div className="relative h-full rounded-2xl overflow-hidden shadow-2xl border border-border">
+            {mainHeroImage && (
+              <Image 
+                src={mainHeroImage.imageUrl} 
+                alt={mainHeroImage.description} 
+                fill 
+                className="object-cover"
+                data-ai-hint={mainHeroImage.imageHint}
+              />
+            )}
+          </div>
+          <div className="grid grid-rows-2 gap-4 h-full">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl border border-border">
+              {subHero1 && (
+                <Image 
+                  src={subHero1.imageUrl} 
+                  alt={subHero1.description} 
+                  fill 
                   className="object-cover"
-                  data-ai-hint={mainHeroImage.imageHint}
-               />
-             )}
+                  data-ai-hint={subHero1.imageHint}
+                />
+              )}
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-xl border border-border">
+              {subHero2 && (
+                <Image 
+                  src={subHero2.imageUrl} 
+                  alt={subHero2.description} 
+                  fill 
+                  className="object-cover"
+                  data-ai-hint={subHero2.imageHint}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
