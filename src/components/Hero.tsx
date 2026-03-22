@@ -45,9 +45,6 @@ export default function Hero() {
                />
              )}
           </div>
-          <div className="absolute -bottom-6 -left-6 w-48 h-48 bg-primary/10 backdrop-blur-xl border border-white/20 rounded-2xl z-20 flex items-center justify-center p-8 text-center">
-            <p className="text-primary font-bold leading-tight">Bespoke Architectural Solutions</p>
-          </div>
         </div>
       </div>
     </section>
