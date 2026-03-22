@@ -45,9 +45,12 @@ export default function Home() {
       <Hero />
       <Services />
       
-      {/* Redesigned About Section */}
+      <Portfolio />
+      <Process />
+      <MoodBoardTool />
+      
+      {/* About Section - Moved behind the AI agent */}
       <section id="about" className="py-32 px-6 bg-primary text-white overflow-hidden relative">
-        {/* Subtle background texture effect */}
         <div className="absolute inset-0 opacity-5 pointer-events-none">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
         </div>
@@ -55,7 +58,6 @@ export default function Home() {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             
-            {/* Left Content Column */}
             <div className="lg:col-span-7 space-y-12">
               <div className="space-y-6">
                 <div className="inline-flex items-center space-x-3 text-white/60 tracking-[0.3em] uppercase text-xs font-bold">
@@ -71,7 +73,6 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Philosophy Grid */}
               <div className="grid sm:grid-cols-2 gap-8 pt-8">
                 {philosophy.map((item, idx) => (
                   <div key={idx} className="group p-6 border border-white/10 hover:border-white/30 transition-all duration-500 bg-white/[0.02]">
@@ -85,10 +86,8 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right Image/Stats Column */}
             <div className="lg:col-span-5 space-y-12">
               <div className="relative h-[500px] lg:h-[650px] group">
-                {/* Decorative border frame */}
                 <div className="absolute -inset-4 border border-white/10 translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-700"></div>
                 
                 <div className="relative h-full overflow-hidden shadow-2xl">
@@ -101,7 +100,6 @@ export default function Home() {
                       data-ai-hint={aboutImage.imageHint}
                     />
                   )}
-                  {/* Overlay badge */}
                   <div className="absolute bottom-8 right-8 bg-white text-primary p-6 shadow-xl">
                     <p className="text-xs uppercase tracking-widest font-bold mb-1">Established</p>
                     <p className="text-2xl font-black">2025</p>
@@ -113,9 +111,6 @@ export default function Home() {
         </div>
       </section>
 
-      <Portfolio />
-      <Process />
-      <MoodBoardTool />
       <Contact />
       <Footer />
       <WhatsAppButton />
