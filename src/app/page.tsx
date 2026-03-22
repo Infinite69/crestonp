@@ -20,22 +20,22 @@ export default function Home() {
     {
       icon: <Compass className="w-6 h-6" />,
       title: "Precision",
-      text: "Every millimeter is calculated to serve both function and aesthetic."
+      text: "Every millimeter of the interior is calculated to serve both function and aesthetic."
     },
     {
       icon: <Feather className="w-6 h-6" />,
       title: "Harmony",
-      text: "We balance raw materials with soft textures for a timeless feel."
+      text: "We balance raw materials with soft textures for a timeless interior feel."
     },
     {
       icon: <ShieldCheck className="w-6 h-6" />,
       title: "Integrity",
-      text: "Uncompromising quality from structural bones to final finishes."
+      text: "Uncompromising quality from furniture selection to final lighting finishes."
     },
     {
       icon: <Sparkles className="w-6 h-6" />,
       title: "Bespoke",
-      text: "No templates. Only unique visions tailored to your narrative."
+      text: "No templates. Only unique interior visions tailored to your narrative."
     }
   ];
 
@@ -49,7 +49,7 @@ export default function Home() {
       <Process />
       <MoodBoardTool />
       
-      {/* About Section - Moved behind the AI agent */}
+      {/* About Section - Positioned behind the AI agent */}
       <section id="about" className="py-32 px-6 bg-primary text-white overflow-hidden relative">
         <div className="absolute inset-0 opacity-5 pointer-events-none">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
@@ -65,11 +65,11 @@ export default function Home() {
                   <span>The Creston Story</span>
                 </div>
                 <h2 className="text-5xl md:text-7xl font-bold tracking-tight leading-[0.9]">
-                  Architecting <br />
-                  <span className="text-white/40">Silent Luxury.</span>
+                  Curating <br />
+                  <span className="text-white/40">Silent Interiors.</span>
                 </h2>
                 <p className="text-white/80 text-xl leading-relaxed max-w-2xl font-light">
-                  Based in Chattarpur, New Delhi, Creston Projects is a sanctuary for architectural innovation. We don't just decorate rooms; we curate environments that breathe with their owners.
+                  Based in Chattarpur, New Delhi, Creston Projects is a sanctuary for interior innovation. We don't just decorate rooms; we curate environments that breathe with their owners through minimalist luxury.
                 </p>
               </div>
 
@@ -96,7 +96,7 @@ export default function Home() {
                       src={aboutImage.imageUrl} 
                       alt={aboutImage.description}
                       fill
-                      className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
+                      className="object-cover transition-all duration-1000 scale-105 group-hover:scale-100"
                       data-ai-hint={aboutImage.imageHint}
                     />
                   )}
