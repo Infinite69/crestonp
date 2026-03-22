@@ -9,7 +9,6 @@ import MoodBoardTool from '@/components/MoodBoardTool';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
-import Stats from '@/components/Stats';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Compass, Feather, ShieldCheck, Sparkles } from 'lucide-react';
@@ -105,7 +104,7 @@ export default function Home() {
                   {/* Overlay badge */}
                   <div className="absolute bottom-8 right-8 bg-white text-primary p-6 shadow-xl">
                     <p className="text-xs uppercase tracking-widest font-bold mb-1">Established</p>
-                    <p className="text-2xl font-black">2024</p>
+                    <p className="text-2xl font-black">2025</p>
                   </div>
                 </div>
               </div>
@@ -114,9 +113,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats component placed for visual break */}
-      <Stats />
-      
       <Portfolio />
       <Process />
       <MoodBoardTool />
