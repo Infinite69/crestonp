@@ -8,6 +8,7 @@ import Process from '@/components/Process';
 import MoodBoardTool from '@/components/MoodBoardTool';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import WhatsAppButton from '@/components/WhatsAppButton';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -49,6 +50,7 @@ export default function Home() {
       </section>
       <Contact />
       <Footer />
+      <WhatsAppButton />
     </main>
   );
 }
