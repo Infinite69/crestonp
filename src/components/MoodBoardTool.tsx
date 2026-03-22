@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { aiDesignMoodBoardSuggestion, AIDesignMoodBoardOutput } from '@/ai/flows/ai-design-mood-board-suggestion';
 import { generateDesignImage } from '@/ai/flows/generate-design-image';
-import { Loader2, Sparkles, Paintbrush, Palette, ImageIcon, AlertCircle } from 'lucide-react';
+import { Loader2, Sparkles, Paintbrush, Palette, ImageIcon, AlertCircle, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from "@/hooks/use-toast";
 
@@ -25,6 +25,30 @@ export default function MoodBoardTool() {
     additionalNotes: '',
   });
 
+  const handleRetryImage = async () => {
+    if (!result) return;
+    setGeneratingImage(true);
+    try {
+      const imageResult = await generateDesignImage({
+        prompt: `${result.conceptTitle}. ${result.description}`
+      });
+      setGeneratedImageUrl(imageResult.imageUrl);
+      toast({
+        title: "Visualization Success",
+        description: "Your photorealistic render is ready.",
+      });
+    } catch (imageError) {
+      console.error("Image generation failed:", imageError);
+      toast({
+        variant: "destructive",
+        title: "Visualization Busy",
+        description: "We've created your mood board! The 3D render engine is taking a bit longer than usual. Please try generating the image again in a few seconds.",
+      });
+    } finally {
+      setGeneratingImage(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -39,7 +63,6 @@ export default function MoodBoardTool() {
       // Step 2: Generate Visual Render
       setGeneratingImage(true);
       try {
-        // We pass a more structured prompt to help the image generator
         const imageResult = await generateDesignImage({
           prompt: `${output.conceptTitle}. ${output.description}`
         });
@@ -167,12 +190,24 @@ export default function MoodBoardTool() {
                 <CardContent className="p-8 space-y-8 flex-1">
                   <div className="relative aspect-video bg-muted group border border-primary/10">
                     {generatedImageUrl ? (
-                      <Image 
-                        src={generatedImageUrl} 
-                        alt="AI Generated Design Preview"
-                        fill
-                        className="object-cover"
-                      />
+                      <div className="relative h-full w-full">
+                        <Image 
+                          src={generatedImageUrl} 
+                          alt="AI Generated Design Preview"
+                          fill
+                          className="object-cover"
+                        />
+                        <Button 
+                          onClick={handleRetryImage} 
+                          variant="secondary"
+                          size="sm"
+                          disabled={generatingImage}
+                          className="absolute bottom-4 right-4 bg-white/90 text-primary hover:bg-white rounded-none shadow-lg"
+                        >
+                          {generatingImage ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <RefreshCw className="w-4 h-4 mr-2" />}
+                          Regenerate Render
+                        </Button>
+                      </div>
                     ) : (
                       <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground bg-muted/50 p-6 text-center">
                         {generatingImage ? (
@@ -188,7 +223,15 @@ export default function MoodBoardTool() {
                         ) : (
                           <>
                             <AlertCircle className="w-10 h-10 mb-4 opacity-20" />
-                            <p className="text-sm opacity-50">Visual render skipped. Try again for a fresh image.</p>
+                            <p className="text-sm opacity-50 mb-4">Visual render skipped. Try again for a fresh image.</p>
+                            <Button 
+                              onClick={handleRetryImage} 
+                              variant="outline" 
+                              className="rounded-none border-primary text-primary hover:bg-primary hover:text-white"
+                            >
+                              <RefreshCw className="w-4 h-4 mr-2" />
+                              Retry Visualization
+                            </Button>
                           </>
                         )}
                       </div>
