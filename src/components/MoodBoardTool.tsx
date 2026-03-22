@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from 'react';
@@ -8,10 +7,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { aiDesignMoodBoardSuggestion, AIDesignMoodBoardOutput } from '@/ai/flows/ai-design-mood-board-suggestion';
 import { generateDesignImage } from '@/ai/flows/generate-design-image';
-import { Loader2, Sparkles, Paintbrush, Palette, ImageIcon } from 'lucide-react';
+import { Loader2, Sparkles, Paintbrush, Palette, ImageIcon, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
+import { useToast } from "@/hooks/use-toast";
 
 export default function MoodBoardTool() {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [generatingImage, setGeneratingImage] = useState(false);
   const [result, setResult] = useState<AIDesignMoodBoardOutput | null>(null);
@@ -26,23 +27,40 @@ export default function MoodBoardTool() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setResult(null);
     setGeneratedImageUrl(null);
+    
     try {
       // Step 1: Generate Text Concept
       const output = await aiDesignMoodBoardSuggestion(formData);
       setResult(output);
       
-      // Step 2: Generate Visual Render in parallel/after
+      // Step 2: Generate Visual Render
       setGeneratingImage(true);
-      const imageResult = await generateDesignImage({
-        prompt: `${output.conceptTitle}: ${output.description}`
-      });
-      setGeneratedImageUrl(imageResult.imageUrl);
+      try {
+        const imageResult = await generateDesignImage({
+          prompt: `${output.conceptTitle}: ${output.description}`
+        });
+        setGeneratedImageUrl(imageResult.imageUrl);
+      } catch (imageError) {
+        console.error("Image generation failed:", imageError);
+        toast({
+          variant: "destructive",
+          title: "Visualization Failed",
+          description: "We generated your concept, but the AI renderer is currently busy. Try again in a moment.",
+        });
+      } finally {
+        setGeneratingImage(false);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("AI Generation Error:", error);
+      toast({
+        variant: "destructive",
+        title: "AI Studio Error",
+        description: "Something went wrong while connecting to the AI Designer. Please check your connection and try again.",
+      });
     } finally {
       setLoading(false);
-      setGeneratingImage(false);
     }
   };
 
@@ -69,6 +87,7 @@ export default function MoodBoardTool() {
                     onChange={e => setFormData({...formData, roomType: e.target.value})}
                     placeholder="e.g. Master Bedroom"
                     required
+                    disabled={loading}
                   />
                 </div>
                 <div className="space-y-2">
@@ -78,6 +97,7 @@ export default function MoodBoardTool() {
                     onChange={e => setFormData({...formData, style: e.target.value})}
                     placeholder="e.g. Bohemian"
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -88,6 +108,7 @@ export default function MoodBoardTool() {
                   onChange={e => setFormData({...formData, colors: e.target.value})}
                   placeholder="e.g. Navy Blue and Cream"
                   required
+                  disabled={loading}
                 />
               </div>
               <div className="space-y-2">
@@ -97,11 +118,12 @@ export default function MoodBoardTool() {
                   onChange={e => setFormData({...formData, additionalNotes: e.target.value})}
                   placeholder="Any specific textures or materials..."
                   className="h-24"
+                  disabled={loading}
                 />
               </div>
               <Button type="submit" disabled={loading} className="w-full h-12 bg-primary">
                 {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                Generate My Design
+                {loading ? "AI Designer at Work..." : "Generate My Design"}
               </Button>
             </form>
           </div>
@@ -138,7 +160,6 @@ export default function MoodBoardTool() {
                   )}
                 </CardHeader>
                 <CardContent className="p-8 space-y-8 flex-1">
-                  {/* Generated Image Section */}
                   <div className="relative aspect-video rounded-xl overflow-hidden bg-muted group border">
                     {generatedImageUrl ? (
                       <Image 
@@ -148,16 +169,21 @@ export default function MoodBoardTool() {
                         className="object-cover"
                       />
                     ) : (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground bg-muted/50 p-6">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground bg-muted/50 p-6 text-center">
                         {generatingImage ? (
                           <>
                             <Loader2 className="w-10 h-10 animate-spin mb-4 text-primary" />
                             <p className="text-sm font-medium animate-pulse">Generating photorealistic render...</p>
                           </>
-                        ) : (
+                        ) : loading ? (
                           <>
                             <ImageIcon className="w-10 h-10 mb-4 opacity-20" />
-                            <p className="text-sm opacity-50">Visual render will appear here</p>
+                            <p className="text-sm opacity-50">Waiting for design concept...</p>
+                          </>
+                        ) : (
+                          <>
+                            <AlertCircle className="w-10 h-10 mb-4 opacity-20" />
+                            <p className="text-sm opacity-50">Image generation failed or skipped</p>
                           </>
                         )}
                       </div>
