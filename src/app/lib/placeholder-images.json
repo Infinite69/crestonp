@@ -4,19 +4,19 @@
     {
       "id": "hero-main",
       "description": "Luxury modern interior with elegant finishes",
-      "imageUrl": "https://picsum.photos/seed/creston-hero/1200/800",
-      "imageHint": "luxury interior"
+      "imageUrl": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1074&auto=format&fit=crop",
+      "imageHint": "luxury lounge"
     },
     {
       "id": "hero-sub1",
       "description": "Minimalist living space concept",
-      "imageUrl": "https://picsum.photos/seed/creston-sub1/600/600",
-      "imageHint": "minimalist lounge"
+      "imageUrl": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=958&auto=format&fit=crop",
+      "imageHint": "minimalist room"
     },
     {
       "id": "hero-sub2",
       "description": "Elegant contemporary kitchen design",
-      "imageUrl": "https://picsum.photos/seed/creston-sub2/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1556912177-c54030639840?q=80&w=1000&auto=format&fit=crop",
       "imageHint": "modern kitchen"
     },
     {
@@ -36,30 +36,6 @@
       "description": "Industrial style workspace design",
       "imageUrl": "https://picsum.photos/seed/creston-port3/800/600",
       "imageHint": "industrial loft"
-    },
-    {
-      "id": "gallery-1",
-      "description": "Premium marble and stone details",
-      "imageUrl": "https://picsum.photos/seed/creston-gal1/800/600",
-      "imageHint": "marble texture"
-    },
-    {
-      "id": "gallery-2",
-      "description": "Bespoke architectural lighting",
-      "imageUrl": "https://picsum.photos/seed/creston-gal2/800/600",
-      "imageHint": "interior lighting"
-    },
-    {
-      "id": "gallery-3",
-      "description": "Curated minimalist furniture",
-      "imageUrl": "https://picsum.photos/seed/creston-gal3/800/600",
-      "imageHint": "designer furniture"
-    },
-    {
-      "id": "gallery-4",
-      "description": "Open plan architectural concepts",
-      "imageUrl": "https://picsum.photos/seed/creston-gal4/800/600",
-      "imageHint": "open architecture"
     },
     {
       "id": "about-studio",

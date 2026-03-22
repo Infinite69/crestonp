@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
@@ -5,7 +6,7 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Hero() {
-  const images = PlaceHolderImages.filter(img => img.id.startsWith('hero-'));
+  const mainHeroImage = PlaceHolderImages.find(img => img.id === 'hero-main');
 
   return (
     <section id="home" className="pt-32 pb-20 px-6">
@@ -33,32 +34,19 @@ export default function Hero() {
         </div>
 
         <div className="relative h-[600px] w-full hidden md:block">
-          <div className="absolute top-0 right-0 w-4/5 h-4/5 z-0 overflow-hidden shadow-2xl rounded-lg">
-             <Image 
-                src={images.find(i => i.id === 'hero-main')?.imageUrl || ''}
-                alt="Main Hero"
-                fill
-                className="object-cover"
-                data-ai-hint="luxury interior"
-             />
+          <div className="absolute inset-0 overflow-hidden shadow-2xl rounded-2xl border-border">
+             {mainHeroImage && (
+               <Image 
+                  src={mainHeroImage.imageUrl}
+                  alt={mainHeroImage.description}
+                  fill
+                  className="object-cover"
+                  data-ai-hint={mainHeroImage.imageHint}
+               />
+             )}
           </div>
-          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 z-10 overflow-hidden shadow-2xl rounded-lg border-8 border-background">
-            <Image 
-                src={images.find(i => i.id === 'hero-sub1')?.imageUrl || ''}
-                alt="Sub Hero 1"
-                fill
-                className="object-cover"
-                data-ai-hint="minimal bedroom"
-             />
-          </div>
-          <div className="absolute top-1/4 -right-10 w-1/3 h-1/3 z-20 overflow-hidden shadow-2xl rounded-lg border-8 border-background">
-            <Image 
-                src={images.find(i => i.id === 'hero-sub2')?.imageUrl || ''}
-                alt="Sub Hero 2"
-                fill
-                className="object-cover"
-                data-ai-hint="modern kitchen"
-             />
+          <div className="absolute -bottom-6 -left-6 w-48 h-48 bg-primary/10 backdrop-blur-xl border border-white/20 rounded-2xl z-20 flex items-center justify-center p-8 text-center">
+            <p className="text-primary font-bold leading-tight">Bespoke Architectural Solutions</p>
           </div>
         </div>
       </div>

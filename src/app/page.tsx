@@ -2,7 +2,6 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import Gallery from '@/components/Gallery';
 import Services from '@/components/Services';
 import Portfolio from '@/components/Portfolio';
 import Process from '@/components/Process';
@@ -19,12 +18,10 @@ export default function Home() {
     <main className="min-h-screen bg-background selection:bg-primary/20">
       <Navbar />
       <Hero />
-      <Gallery />
       <Services />
       <Portfolio />
       <Process />
       <MoodBoardTool />
-      {/* Testimonials removed to better reflect a fresh startup profile */}
       <section id="about" className="py-32 px-6 bg-primary text-white">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
