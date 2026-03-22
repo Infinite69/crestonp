@@ -16,31 +16,31 @@
     {
       "id": "hero-sub2",
       "description": "Elegant contemporary kitchen design",
-      "imageUrl": "https://images.unsplash.com/photo-1556912177-c54030639840?q=80&w=1000&auto=format&fit=crop",
+      "imageUrl": "https://images.unsplash.com/photo-1633330977020-2bdfb8530cc2?q=80&w=1170&auto=format&fit=crop",
       "imageHint": "modern kitchen"
     },
     {
       "id": "portfolio-1",
       "description": "Sophisticated living area with premium textures",
-      "imageUrl": "https://picsum.photos/seed/creston-port1/800/600",
+      "imageUrl": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1400&auto=format&fit=crop",
       "imageHint": "contemporary living"
     },
     {
       "id": "portfolio-2",
       "description": "Sleek and serene master bedroom",
-      "imageUrl": "https://picsum.photos/seed/creston-port2/800/1000",
+      "imageUrl": "https://images.unsplash.com/photo-1616594868565-178b1c786f0c?q=80&w=1400&auto=format&fit=crop",
       "imageHint": "luxury bedroom"
     },
     {
       "id": "portfolio-3",
       "description": "Industrial style workspace design",
-      "imageUrl": "https://picsum.photos/seed/creston-port3/800/600",
-      "imageHint": "industrial loft"
+      "imageUrl": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1400&auto=format&fit=crop",
+      "imageHint": "office interior"
     },
     {
       "id": "about-studio",
       "description": "The creative studio environment",
-      "imageUrl": "https://picsum.photos/seed/creston-studio/1200/1200",
+      "imageUrl": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=1200&auto=format&fit=crop",
       "imageHint": "architect studio"
     }
   ]
